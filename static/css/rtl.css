@@ -1,0 +1,12 @@
+body {
+  direction: rtl;
+  text-align: right;
+}
+
+.navbar {
+  float: right;
+}
+
+.form-control {
+  text-align: right;
+}
