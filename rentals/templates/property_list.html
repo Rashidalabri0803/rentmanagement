@@ -24,7 +24,7 @@
           <tr>
             <td>{{ property.address }}</td>
             <td>{{ property.rent_price }}</td>
-            <td>{{ property.tenant.name if property.tenant else 'غير مستأجر'}}</td>
+            <td>{{ property.tenant.name if property.tenant else "غير مستأجر"}}</td>
           </tr>
           {% endfor %}
         </tbody>
