@@ -14,7 +14,7 @@ class Property(models.Model):
 
 class Tenant(models.Model):
   name = models.CharField(max_length=100, verbose_name="اسم المستأجر")
-  phone = models.CharField(max_length=15, verbose_name="رقم الهاتف")
+  phone_number = models.CharField(max_length=15, verbose_name="رقم الهاتف")
   email = models.EmailField(verbose_name="البريد الإلكتروني")
 
   class Meta:
