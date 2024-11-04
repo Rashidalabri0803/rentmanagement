@@ -2,7 +2,7 @@ from django.db import models
 
 class Property(models.Model):
   name = models.CharField(max_length=200, verbose_name="اسم العقار")
-  address = models.TExtField(verbose_name="عنوان العقار")
+  address = models.TextField(verbose_name="عنوان العقار")
   price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="سعر الإيجار الشهري")
 
   class Meta:
