@@ -9,6 +9,7 @@
     <ul>
       {% for property in properties %}
       <li>{{ property.name }} - {{ property.address }} - {{ property.price }}</li>
+      {% endfor %}
     </ul>
     <a href="{% url 'add_property' %}">إضافة عقار جديد</a>
   </body>
