@@ -1,12 +1,14 @@
 from django.contrib import admin
 
-from .models import Lease, Property, Tenant
+from .models import Property, Tenant, Lease, Payment
 
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
     list_display = ("name", "address", "price")
     search_fields = ("name", "address")
+
+
 
 @admin.register(Tenant)
 class TenantAdmin(admin.ModelAdmin):

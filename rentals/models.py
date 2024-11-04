@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Property(models.Model):
   name = models.CharField(max_length=200, verbose_name="اسم العقار")
   address = models.TextField(verbose_name="عنوان العقار")
@@ -11,6 +12,18 @@ class Property(models.Model):
 
   def __str__(self):
     return self.name
+
+class Amenity(models.Model):
+  property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name = "amenities", verbose_name="العقار")
+  name = models.CharField(max_length=100, verbose_name="اسم المرفق")
+  description = models.TextField(verbose_name="وصف المرفق", blank=True)
+
+  class Meta:
+    verbose_name = "مرفق"
+    verbose_name_plural = "المرفقات"
+
+  def __str__(self):
+    return f"{self.name} - {self.property.name}"
 
 class Tenant(models.Model):
   name = models.CharField(max_length=100, verbose_name="اسم المستأجر")
@@ -37,3 +50,16 @@ class Lease(models.Model):
 
   def __str__(self):
     return f"{self.property} - {self.tenant}"
+
+class Payment(models.Model):
+  lease = models.ForeignKey(Lease, on_delete=models.CASCADE, verbose_name="العقد")
+  date = models.DateField(verbose_name="تاريخ الدفع")
+  amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="قيمة الدفع")
+  method = models.CharField(max_length=50, verbose_name="طريقة الدفع", choices=[("cash", "نقدا"), ("bank", "تحويل بنكي")])
+  
+  class Meta:
+    verbose_name = "دفعة"
+    verbose_name_plural = "دفعات"
+
+  def __str__(self):
+    return f"{self.lease} - {self.amount}"
