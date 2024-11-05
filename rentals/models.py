@@ -26,9 +26,21 @@ class Property(models.Model):
   def __str__(self):
     return self.name
 
+class Tenant(models.Model):
+  name = models.CharField(max_length=100, verbose_name="اسم المستأجر")
+  phone_number = models.CharField(max_length=15, verbose_name="رقم الهاتف")
+  email = models.EmailField(verbose_name="البريد الإلكتروني")
+
+  class Meta:
+    verbose_name = "مستأجر"
+    verbose_name_plural = "المستأجرون"
+
+  def __str__(self):
+    return self.name
+
 class Note(models.Model):
   property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="notes", verbose_name="العقار")
-  tenant = models.ForeignKey("Tentant", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="المستأجر")
+  tenant = models.ForeignKey("Tenant", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="المستأجر")
   content = models.TextField(verbose_name="محتوى الملاحظة")
   created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإنشاء")
 
@@ -53,18 +65,7 @@ class MaintenanceRecord(models.Model):
   def __str__(self):
     return f"صيانة: {self.description} - {self.property.name}"
 
-class Tenant(models.Model):
-  name = models.CharField(max_length=100, verbose_name="اسم المستأجر")
-  phone_number = models.CharField(max_length=15, verbose_name="رقم الهاتف")
-  email = models.EmailField(verbose_name="البريد الإلكتروني")
 
-  class Meta:
-    verbose_name = "مستأجر"
-    verbose_name_plural = "المستأجرون"
-
-  def __str__(self):
-    return self.name
-    
 class Amenity(models.Model):
   property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name = "amenities", verbose_name="العقار")
   name = models.CharField(max_length=100, verbose_name="اسم المرفق")
