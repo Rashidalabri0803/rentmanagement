@@ -1,5 +1,37 @@
 from django import forms
-from .models import Property, Tenant, Lease, Amenity, Payment
+
+from .models import (
+    Amenity,
+    Lease,
+    MaintenanceRecord,
+    Note,
+    Payment,
+    Property,
+    Tenant,
+)
+
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = "__all__"
+        labels = {
+            "property": "العقار",
+            "tenant": "المستأجر",
+            "content": "محتوى الملاحظة",
+        }
+
+class MaintenanceRecordForm(forms.ModelForm):
+    class Meta:
+        model = MaintenanceRecord
+        fields = "__all__"
+        labels = {
+            "property": "العقار",
+            "description": "وصف الصيانة",
+            "date": "تاريخ الصيانة",
+            "cost": "تكلفة الصيانة",
+            "is_completed": "تم الإنجاز",
+        }
 
 class PropertyForm(forms.ModelForm):
     class Meta:

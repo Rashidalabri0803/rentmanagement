@@ -1,8 +1,21 @@
 from django.contrib import admin
 
-from .models import Property, Amenity, Tenant, Lease, Payment
+from .models import (
+    Amenity,
+    Lease,
+    MaintenanceRecord,
+    Owner,
+    Payment,
+    Property,
+    Tenant,
+)
 
 
+@admin.register(Owner)
+class OwnerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'phone_number', 'email')
+    search_fields = ('name', 'phone_number', 'email')
+    
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
     list_display = ("name", "address", "price")
@@ -29,3 +42,9 @@ class PaymentAdmin(admin.ModelAdmin):
     list_display = ("lease", "date", "amount", "method")
     list_filter = ("method", "date")
     search_fields = ("lease__property__name", "lease__tenant__name")
+
+@admin.register(MaintenanceRecord)
+class MaintenanceRecordAdmin(admin.ModelAdmin):
+    list_display = ("property", "description", "date", "cost", "is_completed")
+    list_filter = ("property__name", "date", "is_completed")
+    search_fields = ("property__name", "description")

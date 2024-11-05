@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="utf-8">
+    <title>سجلات الصيانة</title>
+  </head>
+  <body>
+    <h1>سجلات الصيانة للعقار: {{ property.name }}</h1>
+    <ul>
+      {% for record in maintenance_rcords %}
+        <li>{{ record.date }} - {{ record.description }} - التكلفة: {{ record.cost }} - {% if record.is_completed %} تم الإنجاز{% else %} </li>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'add_maintenance_record' property.id %}">إضافة سجل صيانة جديد</a>
+  </body>
+</html>
