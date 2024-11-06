@@ -24,6 +24,11 @@ def add_invoice(request):
         form = InvoicesForm()
     return render(request, 'add_invoice.html', {'form': form})
 
+def document_list(request, property_id):
+    property = get_object_or_404(Property, pk=property_id)
+    documents = property.documents.all()
+    return render(request, 'document_list.html', {'documents': documents, 'property': property})
+
 def add_document(request):
     if request.method == 'POST':
         form = DocumentsForm(request.POST, request.FILES)
