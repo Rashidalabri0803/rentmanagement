@@ -1,13 +1,13 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import (
-    DocumentForm,
-    InvoiceForm,
+    DocumentsForm,
+    InvoicesForm,
     MaintenanceRecordForm,
     NoteForm,
     PropertyForm,
 )
-from .models import Lease, Payment, Property, Tenant
+from .models import Invoice, Lease, Payment, Property, Tenant
 
 
 def invoice_list(request):
@@ -16,22 +16,22 @@ def invoice_list(request):
 
 def add_invoice(request):
     if request.method == 'POST':
-        form = InvoiceForm(request.POST)
+        form = InvoicesForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('invoice_list')
     else:
-        form = InvoiceForm()
+        form = InvoicesForm()
     return render(request, 'add_invoice.html', {'form': form})
 
 def add_document(request):
     if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
+        form = DocumentsForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('document_list')
     else:
-        form = DocumentForm()
+        form = DocumentsForm()
     return render(request, 'add_document.html', {'form': form})
     
 def property_list(request):
