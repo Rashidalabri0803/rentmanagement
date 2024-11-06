@@ -1,9 +1,39 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import PropertyForm, TenantForm, LeaseForm, NoteForm, MaintenanceRecordForm, AmenityForm, PaymentForm
-from .models import Lease, Property, Tenant, Amenity, Payment, MaintenanceRecord, Note
+from .forms import (
+    DocumentForm,
+    InvoiceForm,
+    MaintenanceRecordForm,
+    NoteForm,
+    PropertyForm,
+)
+from .models import Lease, Payment, Property, Tenant
 
 
+def invoice_list(request):
+    invoices = Invoice.objects.all()
+    return render(request, 'invoice_list.html', {'invoices': invoices})
+
+def add_invoice(request):
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('invoice_list')
+    else:
+        form = InvoiceForm()
+    return render(request, 'add_invoice.html', {'form': form})
+
+def add_document(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('document_list')
+    else:
+        form = DocumentForm()
+    return render(request, 'add_document.html', {'form': form})
+    
 def property_list(request):
     properties = Property.objects.all()
     return render(request, 'property_list.html', {'properties': properties})

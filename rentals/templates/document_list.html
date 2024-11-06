@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="utf-8">
+    <title>قائمة المستندات</title>
+  </head>
+  <body>
+    <h1>قائمة المستندات</h1>
+    <ul>
+      {% for document in documents %}
+      <li>
+        وصف: {{ document.description }} <a href="{{ document.file.url }}">تنزيل</a> - تاريخ التحميل: {{ document.uploaded_at }}
+      </li>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'add_document' property.id %}">إضافة مستند جديد</a>
+  </body>
+</html>

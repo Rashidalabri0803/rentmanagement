@@ -2,15 +2,53 @@ from django import forms
 
 from .models import (
     Amenity,
+    Document,
+    Invoice,
     Lease,
     MaintenanceRecord,
     Note,
     Payment,
+    PaymentHistory,
     Property,
     Tenant,
 )
 
 
+class InvoicesForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = '__all__'
+        labels = {
+            'lease': 'عقد الإيجار',
+            'date_issued': 'تاريخ الإصدار',
+            'due_date': 'تاريخ الإستحقاق',
+            'amount_due': 'المبلغ المستحق',
+            'is_paid': 'تم السداد',
+        }
+
+class DocumentsForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = '__all__'
+        labels = {
+            'property': 'العقار',
+            'lease': 'عقد الإيجار',
+            'file': 'ملف المستند',
+            'description': 'وصف المستند',
+        }
+
+class PaymentHistoriesForm(forms.ModelForm):
+    class Meta:
+        model = PaymentHistory
+        fields = '__all__'
+        labels = {
+            'lease': 'عقد الإيجار',
+            'date': 'تاريخ الدفع',
+            'amount': 'المبلغ المدفوع',
+            'payment_method': 'طريقة الدفع',
+            'invoice': 'الدفعة المرتبطة',
+        }
+        
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note

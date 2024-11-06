@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta charset="utf-8">
+  <title>قائمة الفواتير</title>
+</head>
+
+<body>
+  <h1>قائمة الفواتير</h1>
+  <ul>
+    {% for invoice in invoices %}
+    <li>
+      عقد الايجار: {{ invoice.lease }} - المبلغ المستحق: {{ invoice.amount_due }} {% if invoice.is_paid %} مدفوعة {%
+      else %} غير مدفوعة {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  < a href="{% url 'add_invoice' %}">إضافة فاتورة جديدة</a>
+</body>
+
+</html>

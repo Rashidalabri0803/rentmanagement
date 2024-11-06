@@ -2,15 +2,37 @@ from django.contrib import admin
 
 from .models import (
     Amenity,
+    Document,
+    Invoice,
     Lease,
     MaintenanceRecord,
     Owner,
     Payment,
+    PaymentHistory,
     Property,
     Tenant,
 )
 
 
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ('lease',  'date_issued', 'due_date', 'amount_due', 'is_paid')
+    list_filter = ('is_paid', 'due_date')
+    search_fields = ('lease__property__name', 'lease__tenant__name')
+    date_hierarchy = 'due_date'
+
+@admin.register(Document)
+class DocumentAdmin(admin.ModelAdmin):
+    list_display = ('property', 'lease', 'description', 'uploaded_at')
+    search_fields = ('property__name', 'description')
+    list_filter = ('uploaded_at',)
+
+@admin.register(PaymentHistory)
+class PaymentHistoryAdmin(admin.ModelAdmin):
+    list_display = ('lease', 'date', 'amount', 'payment_method', 'invoice')
+    list_filter = ('payment_method', 'date')
+    search_fields = ('lease__property__name', 'lease__tenant__name')
+    
 @admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone_number', 'email')
