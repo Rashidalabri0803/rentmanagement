@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import (
+    ContactForm,
     DocumentsForm,
     InvoicesForm,
     MaintenanceRecordForm,
@@ -10,6 +11,19 @@ from .forms import (
 from .models import Invoice, Lease, Payment, Property, Tenant
 
 
+def contact_list(request, tenant_id):
+    tenant = get_object_or_404(Tenant, id=tenant_id)
+    contacts = tenant.contacts.all()
+    return render(request, "contact_list.html", {"tenant": tenant, "contacts": contacts})
+
+def add_contact(request, tenant_id):
+    tenant = get_object_or_404(Tenant, id=tenant_id)
+    form = ContactForm(request.POST or None)
+    if form.is_valid():
+        form.save(tenant=tenant)
+        return redirect("contact_list", tenant_id=tenant_id)
+    return render(request, "add_contact.html", {"form": form, "tenant": tenant})
+    
 def invoice_list(request):
     invoices = Invoice.objects.all()
     return render(request, 'invoice_list.html', {'invoices': invoices})

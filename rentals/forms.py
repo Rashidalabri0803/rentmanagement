@@ -11,9 +11,15 @@ from .models import (
     PaymentHistory,
     Property,
     Tenant,
+    Contact,
 )
 
-
+class BootstrapFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({"class": "form-control", "dir":"rtl"})
+        
 class InvoicesForm(forms.ModelForm):
     class Meta:
         model = Invoice
@@ -71,7 +77,7 @@ class MaintenanceRecordForm(forms.ModelForm):
             "is_completed": "تم الإنجاز",
         }
 
-class PropertyForm(forms.ModelForm):
+class PropertyForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Property
         fields = "__all__"
@@ -122,4 +128,15 @@ class PaymentForm(forms.ModelForm):
             "date": "تاريخ الدفع",
             "amount": "قيمة الدفع",
             "method": "طريقة الدفع",
+        }
+
+class ContactForm(BootstrapFormMixin, forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = "__all__"
+        labels = {
+            "tenant": "المستأجر",
+            "name": "اسم جهة الاتصال",
+            "relationship": "العلاقة",
+            "phone_number": "رقم الهاتف",
         }
