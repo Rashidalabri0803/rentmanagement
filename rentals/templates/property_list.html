@@ -1,16 +1,26 @@
-<!DOCTYPE html>
-<html lang="ar">
-  <head>
-    <meta charset="utf-8">
-    <title>قائمة العقارات</title>
-  </head>
-  <body>
-    <h1>قائمة العقارات</h1>
-    <ul>
-      {% for property in properties %}
-      <li>{{ property.name }} - {{ property.address }} - {{ property.price }}</li>
-      {% endfor %}
-    </ul>
-    <a href="{% url 'add_property' %}">إضافة عقار جديد</a>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block title %}قائمة العقارات{% endblock %}
+{% block content %}
+<h2 class="mb-4">قائمة العقارات</h2>
+<a href="{% url 'add_property' %}" class="btn btn-primary mb-3">إضافة عقار جديد</a>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>اسم العقار</th>
+      <th>المالك</th>
+      <th>سعر الإيجار الشهري</th>
+      <th>تفاصيل</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for property in properties %}
+    <tr>
+      <td>{{ property.name }}</td>
+      <td>{{ property.owner }}</td>
+      <td>{{ property.price }}</td>
+      <td><a href="{% url 'property_detail' property.id %}" class="btn btn-info btn-sm">عرض</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
