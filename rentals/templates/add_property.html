@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="ar">
-  <head>
-    <meta charset="utf-8">
-    <title>إضافة عقار جديد</title>
-  </head>
-  <body>
-    <h1>إضافة عقار جديد</h1>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">حفظ</button>
+{% extends 'base.html' %}
+{% block title %}إضافة عقار{% endblock %}
+{% block content %}
+    <h2 class="mb-4">إضافة عقار جديد</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">حفظ</button>
+        <a href="{% url 'property_list' %}" class="btn btn-secondary">إلغاء</a>
     </form>
-  </body>
-</html>
+{% endblock %}
