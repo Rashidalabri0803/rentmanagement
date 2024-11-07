@@ -1,16 +1,24 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Property, Tenant, Lease, Invoice, PaymentHistory, Amenity, Contact, Document, MaintenanceRecord
+
 from .forms import (
-    PropertyForm,
-    TenantForm,
-    LeaseForm,
-    InvoiceForm,
-    PaymentHistoryForm,
     AmenityForm,
     ContactForm,
     DocumentForm,
+    InvoiceForm,
+    LeaseForm,
     MaintenanceRecordForm,
+    PaymentHistoryForm,
+    PropertyForm,
+    TenantForm,
 )
+from .models import (
+    Invoice,
+    Lease,
+    PaymentHistory,
+    Property,
+    Tenant,
+)
+
 
 def property_list(request):
     properties = Property.objects.all()
