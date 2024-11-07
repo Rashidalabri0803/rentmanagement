@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}تفاصيل العقار{% endblock %}
+
+{% block content %}
+<h2>تفاصيل العقار: {{ property.name }}</h2>
+<p><strong>المالك:</strong> {{ property.owner }}</p>
+<p><strong>عنوان العقار:</strong> {{ property.address }}</p>
+<p><strong>سعر الإيجار الشهري:</strong> {{ property.price }}</p>
+
+<h3 class="mt-4">مرافق العقار</h3>
+<a href="{% url 'add_amenity' property.id %}" class="btn btn-primary mb-3">إضافة مرفق جديد</a>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>اسم المرافق</th>
+            <th>وصف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for amenity in property.amenities.all %}
+        <tr>
+            <td>{{ amenity.name }}</td>
+            <td>{{ amenity.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
