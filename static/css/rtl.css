@@ -3,10 +3,44 @@ body {
   text-align: right;
 }
 
-.navbar {
+.table thead th {
+  text-align: right;
+}
+
+.table tbody td {
+  text-align: right;
+}
+
+.btn {
   float: right;
+}
+
+.navbar-nav {
+  float: right;
+}
+
+.navbar-nav .nav-item .nav-link {
+  float: right;
+}
+
+.fa-arrow-left {
+  content: "\f061";
+}
+
+.fa-arrow-right {
+  content: "\f060";
 }
 
 .form-control {
   text-align: right;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.mb-3, .mt-3, .mx-3 {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }
