@@ -1,4 +1,6 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 
 class Owner(models.Model):
@@ -19,10 +21,21 @@ class Property(models.Model):
   name = models.CharField(max_length=200, verbose_name="اسم العقار")
   address = models.TextField(verbose_name="عنوان العقار")
   price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="سعر الإيجار الشهري")
+  tags = models.ManyToManyField("Tag", blank=True, related_name="properties", verbose_name="التصنيفات")
 
   class Meta:
     verbose_name = "عقار"
     verbose_name_plural = "العقارات"
+
+  def __str__(self):
+    return self.name
+
+class Tag(models.Model):
+  name = models.CharField(max_length=50, unique=True, verbose_name="وصف التصنيف")
+
+  class Meta:
+    verbose_name = "تصنيف"
+    verbose_name_plural = "التصنيفات"
 
   def __str__(self):
     return self.name
@@ -31,6 +44,9 @@ class Tenant(models.Model):
   name = models.CharField(max_length=100, verbose_name="اسم المستأجر")
   phone_number = models.CharField(max_length=15, verbose_name="رقم الهاتف")
   email = models.EmailField(verbose_name="البريد الإلكتروني")
+  rating = models.DecimalField(max_digits=2, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True, verbose_name="تقييم المستأجر")
+
+
 
   class Meta:
     verbose_name = "مستأجر"
@@ -39,12 +55,27 @@ class Tenant(models.Model):
   def __str__(self):
     return self.name
 
+class TenantReview(models.Model):
+  tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name="reviews", verbose_name="المستأجر")
+  review_name = models.CharField(max_length=100, verbose_name="اسم المراجع")
+  review_date = models.DateField(verbose_name="تاريخ المراجعة")
+  rating = models.DecimalField(max_digits=2, decimal_places=1, validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name="التقييم")
+  comment = models.TextField(verbose_name="التعليق")
+
+  class Meta:
+    verbose_name = "مراجعة المستأجر"
+    verbose_name_plural = "المراجعات المستأجرين"
+
+  def __str__(self):
+    return f"مراجعة لــ {self.tenant.name} - {self.rating} نجوم"
+    
 class Lease(models.Model):
   property = models.ForeignKey(Property, on_delete=models.CASCADE, verbose_name="العقار")
   tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, verbose_name="المستأجر")
   start_date = models.DateField(verbose_name="تاريخ البدء الإيجار")
   end_date = models.DateField(verbose_name="تاريخ النهاية الإيجار")
   monthly_rent = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="الإيجار الشهري")
+  security_deposit = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="التأمين")
 
   class Meta:
     verbose_name = "عقد إيجار"
@@ -59,6 +90,7 @@ class Invoice(models.Model):
   due_date = models.DateField(verbose_name="تاريخ الإستحقاق")
   amount_due = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="المبلغ المستحق")
   is_paid = models.BooleanField(default=False, verbose_name="تم السداد")
+  late_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="رسوم التأخير")
 
   class Meta:
     verbose_name = "فاتورة"
@@ -66,6 +98,12 @@ class Invoice(models.Model):
 
   def __str__(self):
     return f"فاتورة - {self.lease} - {self.amount_due}"
+
+  def apply_late_fee(self):
+    """تطبيق رسوم تأخير إذا كانت الفاتورة غير مدفوعة وتجاوزت تاريخ الاستحقاق"""
+    if not self.is_paid and self.due_date < timezone.now().date():
+      self.amount_due += self.late_fee
+      self.save()
 
 class PaymentHistory(models.Model):
   lease = models.ForeignKey(Lease, on_delete=models.CASCADE, related_name="payment_histories", verbose_name="عقد الايجار")
