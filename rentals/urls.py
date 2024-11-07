@@ -16,7 +16,7 @@ urlpatterns = [
     path("invoices/", views.invoice_list, name="invoice_list"),
     path("invoices/add/", views.add_invoice, name="add_invoice"),
 
-    path("payments/", views.payment_history_list, name="payment_list"),
+    path("payments/", views.payment_history_list, name="payment_history_list"),
     path("payments/add/", views.add_payment_history, name="add_payment"),
 
     path("properties/<int:property_id>/amenities/", views.amenity_list, name="amenity_list"),
