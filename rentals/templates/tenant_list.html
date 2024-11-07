@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}قائمة المستأجرين{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">قائمة المستأجرين</h2>
+<a href="{% url 'add_tenant' %}" class="btn btn-primary mb-3">إضافة مستأجر جديد</a>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>اسم المستأجر</th>
+            <th>رقم الهاتف</th>
+            <th>البريد الإلكتروني</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tenant in tenants %}
+        <tr>
+            <td>{{ tenant.name }}</td>
+            <td>{{ tenant.phone_number }}</td>
+            <td>{{ tenant.email }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
